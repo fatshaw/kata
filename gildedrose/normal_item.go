@@ -1,5 +1,7 @@
 package gildedrose
 
+const MaxQuality = 50
+
 type NormalItem struct {
 	sellIn  int
 	quality int
@@ -14,9 +16,7 @@ func (i *NormalItem) GetQuality() int {
 }
 
 func (i *NormalItem) decreaseSellIn() {
-	if i.sellIn > 0 {
-		i.sellIn--
-	}
+	i.sellIn--
 }
 
 func (i *NormalItem) decreaseQuality() {
@@ -25,8 +25,18 @@ func (i *NormalItem) decreaseQuality() {
 	}
 }
 
+func (i *NormalItem) increaseQuality() {
+	if i.quality < MaxQuality {
+		i.quality++
+	}
+}
+
 func (i *NormalItem) Change() {
+	i.decreaseSellIn()
 	i.decreaseQuality()
+	if i.sellIn < 0 {
+		i.decreaseQuality()
+	}
 }
 
 func init() {
